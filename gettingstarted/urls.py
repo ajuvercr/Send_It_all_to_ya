@@ -17,5 +17,7 @@ import hello.views
 urlpatterns = [
     path("", hello.views.index, name="index"),
     path("yes/", hello.views.yes, name="yes"),
-    path("no/", hello.views.no, name="no")
+    path("no/", hello.views.no, name="no"),
+    path("login/", hello.views.login, name="login"),
+    path("message/", hello.views.message, name="message")
 ]

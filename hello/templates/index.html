@@ -3,6 +3,63 @@
 
 {% block content %}
 <p>
-  hi
+  <form action="/login" method="post">
+      <input type="text" name="name" value="username">
+      <input type="text" name="password" value="password">
+      <input type="submit" value="Login">
+  </form>
+
+  <form action="/message" method="post">
+      <input type="text" name="msg" value="message">
+      <input type="submit" value="Login">
+  </form>
+
+  <button onclick="start()">Start</button>
+
+  <p id="info"></p>
+
+  <button onclick="yes()">YES</button>
+  <button onclick="no()">NO</button>
 </p>
+
+<script>
+  const info = document.getElementById("info");
+
+  function start() {
+    const http = new XMLHttpRequest();
+    http.open('get', document.location.origin + "start");
+
+    Http.onreadystatechange= (e)=>{
+      console.log(http.responseText)
+      info.innerHTML = http.responseText;
+    }
+
+    http.send();
+}
+
+function no() {
+  const http = new XMLHttpRequest();
+    http.open('get', document.location.origin + "no");
+
+    Http.onreadystatechange= (e)=>{
+      console.log(http.responseText)
+      info.innerHTML = http.responseText;
+    }
+
+    http.send();
+}
+
+function yes() {
+  const http = new XMLHttpRequest();
+    http.open('get', document.location.origin + "yes");
+
+    Http.onreadystatechange= (e)=>{
+      console.log(http.responseText)
+      info.innerHTML = http.responseText;
+    }
+
+    http.send();
+}
+
+</script>
 {% endblock %}
