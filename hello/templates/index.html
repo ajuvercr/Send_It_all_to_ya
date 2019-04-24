@@ -2,35 +2,63 @@
 {% load staticfiles %}
 
 {% block content %}
+
+<iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe"></iframe>
+
 <p>
-  <form action="/login" method="post">
+  <form action="/login" method="post" target="dummyframe">
+      {% csrf_token %}
+
       <input type="text" name="name" value="username">
-      <input type="text" name="password" value="password">
+      <input type="password" name="password" value="passwords">
       <input type="submit" value="Login">
   </form>
 
-  <form action="/message" method="post">
+  <form action="/message" method="post" target="dummyframe">
+      {% csrf_token %}
+
       <input type="text" name="msg" value="message">
       <input type="submit" value="Login">
   </form>
 
-  <button onclick="start()">Start</button>
-
+  <button onclick='send("/start")'>Start</button>
   <p id="info"></p>
 
-  <button onclick="yes()">YES</button>
-  <button onclick="no()">NO</button>
+  <p id="next"></p>
+
+  <button onclick='send("/yes")'>YES</button>
+  <button onclick='send("/no")'>NO</button>
 </p>
 
 <script>
   const info = document.getElementById("info");
+  const next = document.getElementById("next");
+
+  function update(object) {
+    const content = JSON.parse(object.target.responseText);
+    console.log("updating");
+    console.log(object);
+
+    info.innerHTML = content.info.map(e => `<p>${e}</p>`);
+    next.innerHTML = content.msg;
+  }
+
+  function send(url) {
+    const http = new XMLHttpRequest();
+    console.log("sending to "+url);
+    http.open('get', document.location.origin + url);
+
+    http.onreadystatechange = update;
+
+    http.send();
+  }
 
   function start() {
     const http = new XMLHttpRequest();
-    http.open('get', document.location.origin + "start");
+    http.open('get', document.location.origin + "/start");
 
-    Http.onreadystatechange= (e)=>{
-      console.log(http.responseText)
+    http.onreadystatechange= (e)=>{
+      console.log(http)
       info.innerHTML = http.responseText;
     }
 
@@ -39,22 +67,10 @@
 
 function no() {
   const http = new XMLHttpRequest();
-    http.open('get', document.location.origin + "no");
+    http.open('get', document.location.origin + "/no");
 
-    Http.onreadystatechange= (e)=>{
-      console.log(http.responseText)
-      info.innerHTML = http.responseText;
-    }
-
-    http.send();
-}
-
-function yes() {
-  const http = new XMLHttpRequest();
-    http.open('get', document.location.origin + "yes");
-
-    Http.onreadystatechange= (e)=>{
-      console.log(http.responseText)
+    http.onreadystatechange= (e)=>{
+      console.log(http)
       info.innerHTML = http.responseText;
     }
 
