@@ -19,6 +19,10 @@ def next(process):
     out['info'] = []
     print(process.poll())
     line = process.stdout.readline().decode("utf-8")[:-1]
+    if not(line):
+        out['msg'] = "failed"
+        return out
+        
     while line[0] != '#':
         out['info'].append(line[1:])
         line = process.stdout.readline().decode("utf-8")[:-1]
