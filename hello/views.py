@@ -8,4 +8,8 @@ def index(request):
     # return HttpResponse('Hello from Python!')
     return render(request, "index.html")
 
+def no(request):
+    return "no"
 
+def yes(request):
+    return "yes"
